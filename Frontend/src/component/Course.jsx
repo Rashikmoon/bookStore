@@ -1,9 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
-import list from '../../public/list.json'
+
 import {Link} from 'react-router-dom'
+import axios from "axios";
+import { getBook } from '../../../Backend/controller/book.controller';
 
 const Course = () => {
+  const [book,setBook] = useState([]);
+  useEffect(()=>{
+    const getBook = async () =>{
+      try {
+        const res = await axios.get("http://localhost:4001/book");
+        console.log(res.data)
+        setBook(res.data)
+      } catch (error) {
+        console.log(error)
+      }
+    };
+    getBook();
+  },[]);
   return (
     <>
     <div className=''>
@@ -21,7 +36,7 @@ const Course = () => {
        </div>
        
       <div className=' grid grid-cols-1 md:grid-cols-4 gap-6 mt-16'>
-      {list.map(({ id, img, heading, free, text, price, button }) => (
+      {book.map(({ id, img, heading, free, text, price, button }) => (
             <div key={id} className='hover:scale-105 transition-all border p-4 rounded-lg shadow-lg'>
               <img src={img} className='w-full h-60 object-cover rounded-t-lg' alt={heading} />
               <div className='flex justify-between items-center mt-4'>

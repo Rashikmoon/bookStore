@@ -1,37 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import list from "../../public/list.json"
+import axios from 'axios';
 
 const Freebook = () => {
-  const filterdata = list.filter((data)=> data.category === "free");
-  const freebookitem = [
-    {
-      id: 1,
-      img: './freebook.jpg',
-      heading: 'Poem Book',
-      free: 'free',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.',
-      price: '$199',
-      button: 'Buy Now'
-    },
-    {
-      id: 2,
-      img: './freebook.jpg',
-      heading: 'Poem Book',
-      free: 'free',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.',
-      price: '$199',
-      button: 'Buy Now'
-    },
-    {
-      id: 3,
-      img: './freebook.jpg',
-      heading: 'Poem Book',
-      free: 'free',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.',
-      price: '$199',
-      button: 'Buy Now'
-    }
-  ];
+  const [book,setBook] = useState([]);
+  useEffect(()=>{
+    const getBook = async () =>{
+      try {
+        const res = await axios.get("http://localhost:4001/book");
+        console.log(res.data)
+        setBook(res.data)
+        
+      } catch (error) {
+        console.log(error)
+      }
+    };
+    getBook();
+  },[]);
+  const filterdata = book.filter((data)=> data.category === "free");
+ 
 
   return (
     <>
